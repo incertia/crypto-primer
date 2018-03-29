@@ -247,6 +247,30 @@ precisely $d < N^{0.292}$, which is significantly better than Wiener's approach.
 \frametitle{RSA - Pitfalls}
 \begin{itemize}
 \item
+Common Prime RSA
+\begin{itemize}
+\item
+So you protect against Wiener/Boneh-Durfee by using Common Prime RSA. \pause
+\item
+Pick $N = pq$ be a $n$-bit modulus with $p = 2ga + 1$ and $q = 2gb + 1$ for some
+prime $g$ of bitsize $\gamma n$, $0 < \gamma < \frac{1}{2}$.
+\item
+Pick $e, d$ such that $ed \equiv 1 \pmod{2gab}$ with the bitsize of $e$ being
+$(1 - \gamma)n$ and the bitsize of $d$ being $\delta n$, where $\delta < (1 -
+\gamma) n$. \pause
+\item
+(Jochemsz-May) If $\delta < \frac{1}{4} (4 + 4 \gamma + \sqrt{13 + 20 \gamma + 4
+\gamma^2}) - \epsilon$, there is a polynomial algorithm to factor $N$.
+\item
+Also uses LLL.
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{RSA - Pitfalls}
+\begin{itemize}
+\item
 The broadcast issue. If an attacker obtains $e$ different copies of your message
 encrypted to $e$ many public moduli, all with the same public exponent $e$, you
 are screwed. \pause
@@ -284,13 +308,32 @@ roots $x < X$ such that $f(x) \equiv 0 \pmod{N}$.
 This uses the LLL algorithm we mentioned before. \pause
 \item
 If $m$ is super small, we can just take the $e$-th root of $c$ and we win!
+\pause
+\item
+Linear padding $x' = ax + b$ also fails. Thus if you know most of the plaintext,
+you win! \pause
+\item
+Given enough ciphertexts $c_i$ of the same message $m$ against different moduli
+$N_i$ and different polynomial padding schemes $f_i$ of maximum degree $d$, we
+can solve uniquely for $m < \min N_i$ and we have more than $d$ ciphertexts.
 \end{itemize}
 \pause
 \item
-There are many more ways of getting cheesed in RSA. \pause
+There are many more ways of getting cheesed in RSA.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{RSA - Pitfalls}
+\begin{itemize}
 \item
 Takeaways? Don't roll your own crypto. Use the peer-reviewed library for your
-language of choice, which will often times be NaCl/libsodium.
+language of choice, which will often times be NaCl/libsodium. \pause
+\begin{itemize}
+\item
+CVE-2016-1494. The Python3 RSA module was vulnerable to a Bleichenbacher (2006)
+like attack, allowing signature forgery against any modulus.
+\end{itemize}
 \end{itemize}
 \end{frame}
 
@@ -562,6 +605,7 @@ $\lambda = \frac{3x^2 + a}{2y}$ otherwise, as well as
 (P + Q)_x &= \lambda^2 - (P_x + Q_x) \\
 -(P + Q)_y &= \lambda ((P + Q)_x - P_x) + P_y. \\
 \end{aligned} \]
+\pause
 \end{itemize}
 \item
 Computing multiples $n \cdot P$ is easy with a method similar to exponentiation
@@ -804,8 +848,7 @@ Coppersmith}
 \frametitle{Q \& A}
 \begin{itemize}
 \item
-Any questions? Any enthusiasm for wanting to get murdered learning the math
-behind my Underhanded Crypto Challenge submission?
+Any questions?
 \end{itemize}
 \end{frame}
 
